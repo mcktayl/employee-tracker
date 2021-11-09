@@ -2,6 +2,7 @@ const inquirer = require('inquirer');
 const cTable = require('console.table');
 const mysql = require('mysql2');
 
+// connects to SQL database
 const connection = mysql.createConnection(
     {
         host: 'localhost',
@@ -56,17 +57,25 @@ function startApplication() {
 }
 
 // TO DO: View all departments option
+function viewDepartment() {};
 
 // TO DO: View all roles option
+function viewRoles() {};
 
 // TO DO: View all employees option
+function viewEmployees() {};
 
 // TO DO: Add department option
+function addDepartment() {};
 
 // TO DO: Add role option
+function addRole() {};
 
 // TO DO: Add employee option
+function addEmployee() {};
 
 // TO DO: Update employee option
+function updateEmployee() {};
 
+// initializes application
 startApplication();
