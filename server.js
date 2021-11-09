@@ -1,16 +1,31 @@
-const connection = require('./config/connection');
 const inquirer = require('inquirer');
 const cTable = require('console.table');
+const mysql = require('mysql2');
+
+const connection = mysql.createConnection(
+    {
+        host: 'localhost',
+        port: 3306,
+        user: 'root',
+        password: 'password',
+        database: 'employee_db'
+    }
+    );
+
+connection.connect(function (err) {
+    if (err) {
+        return console.log(err)
+    };
+    console.log('Connected to the employee_db database.');
+});
 
 // TO DO: Add startup options
 function startApplication() {
-    console.log('application started');
-
     inquirer
         .prompt([
             {
                 type: 'list',
-                name: 'options',
+                name: 'option',
                 message: 'Welcome to the employee database.  Which of the following would you like to do?',
                 choices: [
                     'View all departments',
@@ -19,10 +34,25 @@ function startApplication() {
                     'Add a department to the database',
                     'Add a role to the database',
                     'Add an employee to the database',
-                    'Update an existing employee\'s information'
+                    'Update an existing employee\'s information',
+                    'Exit application'
                 ]
             }
         ])
+        .then((function ({ option }) {
+            switch (option) {
+                case 'View all departments':
+                    viewDepartment();
+                    break;
+                case 'Exit application':
+                    connection.end(function (err) {
+                        if (err) {
+                            return console.log(err)
+                        };
+                        console.log('No longer connected to the database.');
+                    });
+            }
+        }))
 }
 
 // TO DO: View all departments option
