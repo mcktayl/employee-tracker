@@ -27,7 +27,7 @@ function startApplication() {
             {
                 type: 'list',
                 name: 'option',
-                message: 'Welcome to the employee database.  Which of the following would you like to do?',
+                message: 'What would you like to do?',
                 choices: [
                     'View all departments',
                     'View all roles',
@@ -48,35 +48,56 @@ function startApplication() {
                 case 'View all roles':
                     viewRoles();
                     break;
+                case 'View all employees':
+                    viewEmployees();
+                    break;
                 case 'Exit application':
                     connection.end(function (err) {
-                        if (err) {
-                            return console.log(err)
-                        };
+                        if (err) throw err;
                         console.log('No longer connected to the database.');
                     });
             }
         }))
 }
 
-// view all departments option
+// option to view all departments in database
 function viewDepartment() {
-    let query = 'SELECT * FROM departments';
-    connection.query(query, function (err, results) {
-        console.table(results);
-    })
+    let query = `SELECT * FROM departments`;
+    connection.query(query, function (err, res) {
+        if (err) throw err;
+        console.table(res);
+    });
 };
 
-// TO DO: View all roles option
+// option to view all roles in database
 function viewRoles() {
-    let query = 'SELECT * FROM roles JOIN departments ON roles.department_id = departments.id';
-    connection.query(query, function (err, results) {
-        console.table(results);
-    })
+    let query = 
+        `SELECT r.id, r.title, r.salary, d.name AS department 
+        FROM roles AS r
+        LEFT JOIN departments AS d 
+        ON r.department_id = d.id`;
+    connection.query(query, function (err, res) {
+        if (err) throw err;
+        console.table(res);
+    });
 };
 
 // TO DO: View all employees option
-function viewEmployees() {};
+function viewEmployees() {
+    let query = 
+        `SELECT e.id, e.first_name, e.last_name, d.name AS department, r.title AS role, r.salary, CONCAT(m.first_name, ' ', m.last_name) AS manager 
+        FROM employees AS e
+        LEFT JOIN roles AS r
+        ON e.role_id = r.id
+        LEFT JOIN departments AS d
+        ON d.id = r.department_id
+        LEFT JOIN employees AS m
+        ON m.id = e.manager_id`;
+    connection.query(query, function (err, res) {
+        if (err) throw err;
+        console.table(res);
+    });
+};
 
 // TO DO: Add department option
 function addDepartment() {};
