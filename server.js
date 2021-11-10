@@ -45,6 +45,9 @@ function startApplication() {
                 case 'View all departments':
                     viewDepartment();
                     break;
+                case 'View all roles':
+                    viewRoles();
+                    break;
                 case 'Exit application':
                     connection.end(function (err) {
                         if (err) {
@@ -65,7 +68,12 @@ function viewDepartment() {
 };
 
 // TO DO: View all roles option
-function viewRoles() {};
+function viewRoles() {
+    let query = 'SELECT * FROM roles JOIN departments ON roles.department_id = departments.id';
+    connection.query(query, function (err, results) {
+        console.table(results);
+    })
+};
 
 // TO DO: View all employees option
 function viewEmployees() {};
