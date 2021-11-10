@@ -20,7 +20,7 @@ connection.connect(function (err) {
     console.log('Connected to the employee_db database.');
 });
 
-// TO DO: Add startup options
+// initial function containing user options and resultsgit 
 function startApplication() {
     inquirer
         .prompt([
@@ -56,8 +56,13 @@ function startApplication() {
         }))
 }
 
-// TO DO: View all departments option
-function viewDepartment() {};
+// view all departments option
+function viewDepartment() {
+    let query = 'SELECT * FROM departments';
+    connection.query(query, function (err, results) {
+        console.table(results);
+    })
+};
 
 // TO DO: View all roles option
 function viewRoles() {};
