@@ -39,6 +39,7 @@ function startApplication() {
                     'Add an employee to the database',
                     'Update an existing employee\'s role',
                     'Update an existing employee\'s manager',
+                    'Delete a role from the database',
                     'Delete an employee from the database',
                     'Exit application'
                 ]
@@ -75,6 +76,9 @@ function startApplication() {
                     break;
                 case 'Update an existing employee\'s manager':
                     updateEmployeeManager();
+                    break;
+                case 'Delete a role from the database':
+                    deleteRole();
                     break;
                 case 'Delete an employee from the database':
                     deleteEmployee();
@@ -337,6 +341,30 @@ function updateEmployeeManager() {
         });
 };
 
+// option to delete a role
+function deleteRole() {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'role_id',
+                message: 'What is the id of the role you\'d like to delete?'
+            }
+        ])
+        .then(function ({ role_id }) {
+            let query = 
+                `DELETE 
+                FROM roles
+                WHERE id='${role_id}'`
+            connection.query(query, function (err, res) {
+                if (err) throw err;
+                console.log('Role successfully deleted from the database.');
+
+                startApplication();
+            })
+        })
+};
+
 // option to delete an employee
 function deleteEmployee() {
     inquirer
@@ -359,7 +387,7 @@ function deleteEmployee() {
                 startApplication();
             })
         })
-}
+};
 
 // initializes application
 startApplication();
