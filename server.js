@@ -17,7 +17,6 @@ connection.connect(function (err) {
     if (err) {
         return console.log(err)
     };
-    console.log('Connected to the employee_db database.');
 });
 
 // initial function containing user options and resultsgit 
