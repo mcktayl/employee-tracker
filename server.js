@@ -33,6 +33,7 @@ function startApplication() {
                     'View all roles',
                     'View all employees',
                     'View employees by manager',
+                    'View employees by department',
                     'Add a department to the database',
                     'Add a role to the database',
                     'Add an employee to the database',
@@ -55,6 +56,9 @@ function startApplication() {
                     break;
                 case 'View employees by manager':
                     viewEmployeesByManager();
+                    break;
+                case 'View employees by department':
+                    viewEmployeesByDepartment();
                     break;
                 case 'Add a department to the database':
                     addDepartment();
@@ -149,7 +153,33 @@ function viewEmployeesByManager() {
                 startApplication();
             })
         })
-}
+};
+
+// option to view employees by department
+function viewEmployeesByDepartment() {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'department_id',
+                message: 'What is the department id you\'d like to view?'
+            }
+        ])
+        .then(function({ department_id }) {
+            let query =
+                `SELECT e.first_name, e.last_name, r.title
+                FROM employees AS e
+                LEFT JOIN roles AS r
+                ON e.role_id = r.id
+                WHERE department_id=${department_id}`
+            connection.query(query, function (err, res) {
+                if (err) throw err;
+                console.table(res);
+
+                startApplication();
+            })
+        })
+};
 
 // option to add a department to database
 function addDepartment() {
