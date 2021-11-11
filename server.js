@@ -51,6 +51,9 @@ function startApplication() {
                 case 'View all employees':
                     viewEmployees();
                     break;
+                case 'Add a department to the database':
+                    addDepartment();
+                    break
                 case 'Exit application':
                     connection.end(function (err) {
                         if (err) throw err;
@@ -82,7 +85,7 @@ function viewRoles() {
     });
 };
 
-// TO DO: View all employees option
+// option to view all employees in database
 function viewEmployees() {
     let query = 
         `SELECT e.id, e.first_name, e.last_name, d.name AS department, r.title AS role, r.salary, CONCAT(m.first_name, ' ', m.last_name) AS manager 
@@ -99,8 +102,26 @@ function viewEmployees() {
     });
 };
 
-// TO DO: Add department option
-function addDepartment() {};
+// option to add a department to database
+function addDepartment() {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'added_department',
+                message: 'What department would you like to add to the database?'
+            }
+        ])
+        .then(function ({ added_department }) {
+            let query = 
+                `INSERT INTO departments (name)
+                VALUES ('${added_department}')`;
+            connection.query(query, function (err, res) {
+                if (err) throw err;
+                console.log('Department successfully added to the database.');
+            })            
+        });
+};
 
 // TO DO: Add role option
 function addRole() {};
