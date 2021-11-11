@@ -35,7 +35,7 @@ function startApplication() {
                     'Add a department to the database',
                     'Add a role to the database',
                     'Add an employee to the database',
-                    'Update an existing employee\'s information',
+                    'Update an existing employee\'s role',
                     'Exit application'
                 ]
             }
@@ -59,6 +59,9 @@ function startApplication() {
                     break;
                 case 'Add an employee to the database':
                     addEmployee();
+                    break;
+                case 'Update an existing employee\'s role':
+                    updateEmployee();
                     break;
                 case 'Exit application':
                     connection.end(function (err) {
@@ -196,8 +199,32 @@ function addEmployee() {
         });
 };
 
-// TO DO: Update employee option
-function updateEmployee() {};
+// option to update employee's role
+function updateEmployee() {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'employee_id',
+                message: 'What is the id of the employee you\'d like to update?'
+            },
+            {
+                type: 'input',
+                name: 'updated_role_id',
+                message: 'What is this employee\'s new role id?',
+            }
+        ])
+        .then(function ({ employee_id, updated_role_id }) {
+            let query = 
+                `UPDATE employees
+                SET role_id='${updated_role_id}'
+                WHERE id='${employee_id}'`
+            connection.query(query, function (err, res) {
+                if (err) throw err;
+                console.log('Employee successfully updated.');
+            });
+        });
+};
 
 // initializes application
 startApplication();
