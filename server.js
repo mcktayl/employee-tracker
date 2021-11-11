@@ -36,6 +36,7 @@ function startApplication() {
                     'Add a role to the database',
                     'Add an employee to the database',
                     'Update an existing employee\'s role',
+                    'Update an existing employee\'s manager',
                     'Exit application'
                 ]
             }
@@ -61,7 +62,10 @@ function startApplication() {
                     addEmployee();
                     break;
                 case 'Update an existing employee\'s role':
-                    updateEmployee();
+                    updateEmployeeRole();
+                    break;
+                case 'Update an existing employee\'s manager':
+                    updateEmployeeManager();
                     break;
                 case 'Exit application':
                     connection.end(function (err) {
@@ -212,7 +216,7 @@ function addEmployee() {
 };
 
 // option to update employee's role
-function updateEmployee() {
+function updateEmployeeRole() {
     inquirer
         .prompt([
             {
@@ -233,7 +237,36 @@ function updateEmployee() {
                 WHERE id='${employee_id}'`
             connection.query(query, function (err, res) {
                 if (err) throw err;
-                console.log('Employee successfully updated.');
+                console.log('Employee\'s role has successfully been updated.');
+
+                startApplication();
+            });
+        });
+};
+
+// option to update employee's manager 
+function updateEmployeeManager() {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'employee_id',
+                message: 'What is the id of the employee you\'d like to update?'
+            },
+            {
+                type: 'input',
+                name: 'updated_manager_id',
+                message: 'What is this employee\'s new manager id?',
+            }
+        ])
+        .then(function ({ employee_id, updated_manager_id }) {
+            let query = 
+                `UPDATE employees
+                SET manager_id='${updated_manager_id}'
+                WHERE id='${employee_id}'`
+            connection.query(query, function (err, res) {
+                if (err) throw err;
+                console.log('Employee\'s manager has successfully been updated.');
 
                 startApplication();
             });
