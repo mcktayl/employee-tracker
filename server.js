@@ -57,6 +57,9 @@ function startApplication() {
                 case 'Add a role to the database':
                     addRole();
                     break;
+                case 'Add an employee to the database':
+                    addEmployee();
+                    break;
                 case 'Exit application':
                     connection.end(function (err) {
                         if (err) throw err;
@@ -157,8 +160,41 @@ function addRole() {
         });
 };
 
-// TO DO: Add employee option
-function addEmployee() {};
+// option to add employee to database
+function addEmployee() {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'first_name',
+                message: 'What is the employee\'s first name?'
+            },
+            {
+                type: 'input',
+                name: 'last_name',
+                message: 'What is the employee\'s last name?'
+            },
+            {
+                type: 'input',
+                name: 'role_id',
+                message: 'What is the employee\'s role id?'
+            },
+            {
+                type: 'input',
+                name: 'manager_id',
+                message: 'What is the employee\'s manager id?'
+            },
+        ])
+        .then(function ({ first_name, last_name, role_id, manager_id }) {
+            let query =
+                `INSERT INTO employees (first_name, last_name, role_id, manager_id)
+                VALUES ('${first_name}', '${last_name}', '${role_id}', '${manager_id}')`;
+            connection.query(query, function (err, res) {
+                if (err) throw err;
+                console.log('Employee successfully added to the database.')
+            });
+        });
+};
 
 // TO DO: Update employee option
 function updateEmployee() {};
