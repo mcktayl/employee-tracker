@@ -34,11 +34,13 @@ function startApplication() {
                     'View all employees',
                     'View employees by manager',
                     'View employees by department',
+                    'View the total budget for a department',
                     'Add a department to the database',
                     'Add a role to the database',
                     'Add an employee to the database',
                     'Update an existing employee\'s role',
                     'Update an existing employee\'s manager',
+                    'Delete a department from the database',
                     'Delete a role from the database',
                     'Delete an employee from the database',
                     'Exit application'
@@ -62,6 +64,9 @@ function startApplication() {
                 case 'View employees by department':
                     viewEmployeesByDepartment();
                     break;
+                case 'View the total budget for a department':
+                    viewBudget();
+                    break
                 case 'Add a department to the database':
                     addDepartment();
                     break;
@@ -76,6 +81,9 @@ function startApplication() {
                     break;
                 case 'Update an existing employee\'s manager':
                     updateEmployeeManager();
+                    break;
+                case 'Delete a department from the database':
+                    deleteDepartment();
                     break;
                 case 'Delete a role from the database':
                     deleteRole();
@@ -187,6 +195,34 @@ function viewEmployeesByDepartment() {
                 startApplication();
             })
         })
+};
+
+// option to view total budget (combined salary) for a department
+function viewBudget() {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'department_id',
+                message: 'What is the department id you\'d like to view?'
+            }
+        ])
+        .then(function({ department_id }) {
+            let query = 
+                `SELECT d.name AS department_name, SUM(salary) AS budget
+                FROM employees AS e
+                LEFT JOIN roles AS r
+                ON e.role_id = r.id
+                LEFT JOIN departments AS d
+                ON d.id = r.department_id
+                WHERE d.id='${department_id}'`
+            connection.query(query, function(err, res) {
+                if (err) throw err;
+                console.table(res);
+
+                startApplication();
+            });
+        });
 };
 
 // option to add a department to database
@@ -339,6 +375,30 @@ function updateEmployeeManager() {
                 startApplication();
             });
         });
+};
+
+// option to delete a department
+function deleteDepartment() {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'department_id',
+                message: 'What is the id of the department you\'d like to delete?'
+            }
+        ])
+        .then(function ({ department_id }) {
+            let query = 
+                `DELETE 
+                FROM departments
+                WHERE id='${department_id}'`
+            connection.query(query, function (err, res) {
+                if (err) throw err;
+                console.log('Department successfully deleted from the database.');
+
+                startApplication();
+            })
+        })
 };
 
 // option to delete a role
