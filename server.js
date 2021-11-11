@@ -78,6 +78,8 @@ function viewDepartment() {
     connection.query(query, function (err, res) {
         if (err) throw err;
         console.table(res);
+
+        startApplication();
     });
 };
 
@@ -91,6 +93,8 @@ function viewRoles() {
     connection.query(query, function (err, res) {
         if (err) throw err;
         console.table(res);
+
+        startApplication();
     });
 };
 
@@ -108,6 +112,8 @@ function viewEmployees() {
     connection.query(query, function (err, res) {
         if (err) throw err;
         console.table(res);
+
+        startApplication();
     });
 };
 
@@ -128,6 +134,8 @@ function addDepartment() {
             connection.query(query, function (err, res) {
                 if (err) throw err;
                 console.log('Department successfully added to the database.');
+
+                startApplication();
             });           
         });
 };
@@ -158,7 +166,9 @@ function addRole() {
                 VALUES ('${role_title}', '${role_salary}', '${role_department}')`;
             connection.query(query, function (err, res) {
                 if (err) throw err;
-                console.log('Role successfully added to the database.')
+                console.log('Role successfully added to the database.');
+                
+                startApplication();
             });
         });
 };
@@ -194,7 +204,9 @@ function addEmployee() {
                 VALUES ('${first_name}', '${last_name}', '${role_id}', '${manager_id}')`;
             connection.query(query, function (err, res) {
                 if (err) throw err;
-                console.log('Employee successfully added to the database.')
+                console.log('Employee successfully added to the database.');
+                
+                startApplication();
             });
         });
 };
@@ -222,6 +234,8 @@ function updateEmployee() {
             connection.query(query, function (err, res) {
                 if (err) throw err;
                 console.log('Employee successfully updated.');
+
+                startApplication();
             });
         });
 };
