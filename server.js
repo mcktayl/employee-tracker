@@ -53,7 +53,10 @@ function startApplication() {
                     break;
                 case 'Add a department to the database':
                     addDepartment();
-                    break
+                    break;
+                case 'Add a role to the database':
+                    addRole();
+                    break;
                 case 'Exit application':
                     connection.end(function (err) {
                         if (err) throw err;
@@ -108,23 +111,51 @@ function addDepartment() {
         .prompt([
             {
                 type: 'input',
-                name: 'added_department',
+                name: 'department_name',
                 message: 'What department would you like to add to the database?'
             }
         ])
-        .then(function ({ added_department }) {
+        .then(function ({ department_name }) {
             let query = 
                 `INSERT INTO departments (name)
-                VALUES ('${added_department}')`;
+                VALUES ('${department_name}')`;
             connection.query(query, function (err, res) {
                 if (err) throw err;
                 console.log('Department successfully added to the database.');
-            })            
+            });           
         });
 };
 
-// TO DO: Add role option
-function addRole() {};
+// option to add a role to database
+function addRole() {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'role_title',
+                message: 'What is the title of this position?'
+            },
+            {
+                type: 'input',
+                name: 'role_salary',
+                message: 'What is the salary for this position?'
+            },
+            {
+                type: 'input',
+                name: 'role_department',
+                message: 'What is this position\'s department id?'
+            }
+        ])
+        .then(function ({ role_title, role_salary, role_department }) {
+            let query =
+                `INSERT INTO roles (title, salary, department_id)
+                VALUES ('${role_title}', '${role_salary}', '${role_department}')`;
+            connection.query(query, function (err, res) {
+                if (err) throw err;
+                console.log('Role successfully added to the database.')
+            });
+        });
+};
 
 // TO DO: Add employee option
 function addEmployee() {};
