@@ -25,9 +25,11 @@ This application requires [Node.js](https://nodejs.org/en/) and several NPM pack
 
 ## Usage
 
-Provide instructions and examples for use. Include screenshots as needed.
-To add a screenshot, create an `assets/images` folder in your repository and upload your screenshot to it. Then, using the relative filepath, add it to your README using the following syntax:
-`md ![alt text](assets/images/screenshot.png) `
+Once the user has completed the installation steps, the user would run "node server" to initiate the application. Once they have started the program, they will be presented with a series of options.
+![Beginning Application](images/screenshot-01)
+
+The user may select any of the options and the option will either be immediately performed or the user may be prompted with clarifying questions for their request. Once a request has been finished, the user will see a message confirming the action was completed.
+![Application Function](images/screenshot-02)
 
 ## Credits
 
