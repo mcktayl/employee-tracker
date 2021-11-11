@@ -25,11 +25,16 @@ This application requires [Node.js](https://nodejs.org/en/) and several NPM pack
 
 ## Usage
 
+A video demonstration can be seen [here](https://user-images.githubusercontent.com/91210267/141321059-f346505c-5ca6-41a1-af0c-81752d38c3af.mp4).
+
 Once the user has completed the installation steps, the user would run "node server" to initiate the application. Once they have started the program, they will be presented with a series of options.
-![Beginning Application](images/screenshot-01)
+
+![Beginning Application](https://user-images.githubusercontent.com/91210267/141320922-6a851f3f-1ebf-48dc-a40a-45cc56212261.png)
 
 The user may select any of the options and the option will either be immediately performed or the user may be prompted with clarifying questions for their request. Once a request has been finished, the user will see a message confirming the action was completed.
-![Application Function](images/screenshot-02)
+
+![Application Function](https://user-images.githubusercontent.com/91210267/141320954-d1cfd5db-8511-464f-a5c0-c3a21e7ca7a4.png)
+
 
 ## Credits
 
