@@ -32,6 +32,7 @@ function startApplication() {
                     'View all departments',
                     'View all roles',
                     'View all employees',
+                    'View employees by manager',
                     'Add a department to the database',
                     'Add a role to the database',
                     'Add an employee to the database',
@@ -50,7 +51,10 @@ function startApplication() {
                     viewRoles();
                     break;
                 case 'View all employees':
-                    viewEmployees();
+                    viewAllEmployees();
+                    break;
+                case 'View employees by manager':
+                    viewEmployeesByManager();
                     break;
                 case 'Add a department to the database':
                     addDepartment();
@@ -103,7 +107,7 @@ function viewRoles() {
 };
 
 // option to view all employees in database
-function viewEmployees() {
+function viewAllEmployees() {
     let query = 
         `SELECT e.id, e.first_name, e.last_name, d.name AS department, r.title AS role, r.salary, CONCAT(m.first_name, ' ', m.last_name) AS manager 
         FROM employees AS e
@@ -120,6 +124,32 @@ function viewEmployees() {
         startApplication();
     });
 };
+
+// option to view employees by manager
+function viewEmployeesByManager() {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'manager_id',
+                message: 'What is the manager id you\'d like to view?'
+            }
+        ])
+        .then(function({ manager_id }) {
+            let query =
+                `SELECT e.first_name, e.last_name, r.title
+                FROM employees AS e
+                LEFT JOIN roles AS r
+                ON e.role_id = r.id
+                WHERE manager_id=${manager_id}`
+            connection.query(query, function (err, res) {
+                if (err) throw err;
+                console.table(res);
+
+                startApplication();
+            })
+        })
+}
 
 // option to add a department to database
 function addDepartment() {
